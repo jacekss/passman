@@ -1,48 +1,46 @@
 ### Steps to reproduce
-1.   
-2.   
-3.   
-  
+1. Just install on owc 8 with postgress   
+2.Try run   
+
 ### Expected behaviour
-Tell us what should happen
+shoud work
 
 ### Actual behaviour
-Tell us what happens instead
+is hanging
 
 ### Server configuration
-**Operating system**:
+**Operating system**: centos 7
 
-**Web server:**
+**Web server:** nginx
 
-**Database:**
+**Database:** postgres
 
-**PHP version:**
+**PHP version:** 5.4.16
 
-**ownCloud version:** (see ownCloud admin page)
+**ownCloud version:** (see ownCloud admin page) 8.0.2
 
-**Updated from an older ownCloud or fresh install:**
+**Updated from an older ownCloud or fresh install:** fresh
 
 ### Client configuration
-**Browser:**
+**Browser:** firefox
 
-**Operating system:**
+**Operating system:** centos 7
 
 ### Logs
+Undefined function: 7 ERROR:  function group_concat(character varying) does not exist
+- isn't it mysql specific function...
 #### Web server error log
+"GET /index.php/apps/passman/api/v1/tags/search?k=test HTTP/1.1" 500 11424 "https://cloud.asseco.pl/index.php/apps/passman/" "Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Firefox/31.0" "-"
+{"reqId":"21306222507bba4604da565a459008a8","remoteAddr":"172.31.0.30","app":"index","message":"Exception: {\"Message\":\"An exception occurred while executing 'SELECT  item.id, item.label,item.user_id, item.account, item.delete_date, item.favicon, LOWER(GROUP_CONCAT(distinct tags.tag_label)) AS tagForSearch ,GROUP_CONCAT(distinct tags.tag_label) AS tags FROM \\\"oc_passman_items\\\" AS item LEFT JOIN \\\"oc_passman_items_tags_xref\\\" AS xref ON xref.item_id = item.id LEFT JOIN \\\"oc_passman_tags\\\" AS tags ON tags.tag_id = xref.tag_id WHERE item.user_id=? AND delete_date =0 GROUP BY item.id HAVING  tagForSearch like ? ORDER BY UPPER(item.label) ASC, tags.tag_label ASC' with params [\\\"owcadmin\\\", \\\"%test%\\\"]:\\n\\nSQLSTATE[42883]: Undefined function: 7 ERROR:  function group_concat(character varying) does not exist\\nLINE 1: ...em.account, item.delete_date, item.favicon, LOWER(GROUP_CONC...\\n                                                             ^\\nHINT:  No function matches the given name and argument types. You might need to add explicit type casts.\",\"Code\":0,\"Trace\":\"#0 \\\/var\\\/www\\\/html\\\/owncloud\\\/3rdparty\\\/doctrine\\\/dbal\\\/lib\\\/Doctrine\\\/DBAL\\\/DBALException.php(116): Doctrine\\\\DBAL\\\\Driver\\\\AbstractPostgreSQLDriver->convertException('An exception oc...', Object(Doctrine\\\\DBAL\\\\Driver\\\\PDOException))\\n#1 \\\/var\\\/www\\\/html\\\/owncloud\\\/3rdparty\\\/doctrine\\\/dbal\\\/lib\\\/Doctrine\\\/DBAL\\\/Statement.php(172): Doctrine\\\\DBAL\\\\DBALException::driverExceptionDuringQuery(Object(Doctrine\\\\DBAL\\\\Driver\\\\PDOPgSql\\\\Driver), Object(Doctrine\\\\DBAL\\\\Driver\\\\PDOException), 'SELECT  item.id...', Array)\\n#2 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/db\\\/statementwrapper.php(63): Doctrine\\\\DBAL\\\\Statement->execute(Array)\\n#3 \\\/var\\\/www\\\/html\\\/owncloud\\\/apps\\\/passman\\\/db\\\/itemmanager.php(95): OC_DB_StatementWrapper->execute(Array)\\n#4 \\\/var\\\/www\\\/html\\\/owncloud\\\/apps\\\/passman\\\/businesslayer\\\/itembusinesslayer.php(35): OCA\\\\Passman\\\\Db\\\\ItemManager->getByTag(Array, 'owcadmin', false)\\n#5 \\\/var\\\/www\\\/html\\\/owncloud\\\/apps\\\/passman\\\/controller\\\/itemapicontroller.php(83): OCA\\\\Passman\\\\BusinessLayer\\\\ItemBusinessLayer->getByTag('test', 'owcadmin', false)\\n#6 [internal function]: OCA\\\\Passman\\\\Controller\\\\ItemApiController->getbytag(NULL)\\n#7 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/appframework\\\/http\\\/dispatcher.php(158): call_user_func_array(Array, Array)\\n#8 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/appframework\\\/http\\\/dispatcher.php(86): OC\\\\AppFramework\\\\Http\\\\Dispatcher->executeController(Object(OCA\\\\Passman\\\\Controller\\\\ItemApiController), 'getbytag')\\n#9 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/appframework\\\/app.php(97): OC\\\\AppFramework\\\\Http\\\\Dispatcher->dispatch(Object(OCA\\\\Passman\\\\Controller\\\\ItemApiController), 'getbytag')\\n#10 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/appframework\\\/routing\\\/routeactionhandler.php(44): OC\\\\AppFramework\\\\App::main('ItemApiControll...', 'getbytag', Object(OC\\\\AppFramework\\\\DependencyInjection\\\\DIContainer), Array)\\n#11 [internal function]: OC\\\\AppFramework\\\\routing\\\\RouteActionHandler->__invoke(Array)\\n#12 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/route\\\/router.php(250): call_user_func(Object(OC\\\\AppFramework\\\\routing\\\\RouteActionHandler), Array)\\n#13 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/base.php(767): OC\\\\Route\\\\Router->match('\\\/apps\\\/passman\\\/a...')\\n#14 \\\/var\\\/www\\\/html\\\/owncloud\\\/index.php(36): OC::handleRequest()\\n#15 {main}\",\"File\":\"\\\/var\\\/www\\\/html\\\/owncloud\\\/3rdparty\\\/doctrine\\\/dbal\\\/lib\\\/Doctrine\\\/DBAL\\\/Driver\\\/AbstractPostgreSQLDriver.php\",\"Line\":91}","level":4,"time":"2015-04-13T12:49:17+00:00"}
+172.31.0.30 - - [13/Apr/2015:14:49:17 +0200] "GET /index.php/apps/passman/api/v1/getbytags?tags=test HTTP/1.1" 500 11424 "https://cloud.asseco.pl/index.php/apps/passman/" "Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Firefox/31.0" "-"
+
 ```
 Insert your webserver log here
-```
+[13/Apr/2015:14:49:14 +0200] "GET /index.php/apps/passman/api/v1/tags/search?k=te HTTP/1.1" 500 11424 "https://cloud.asseco.pl/index.php/apps/passman/" "Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Firefox/31.0" "-"
+[13/Apr/2015:14:49:14 +0200] "GET /index.php/apps/passman/api/v1/tags/search?k=test HTTP/1.1" 500 11424 "https://cloud.asseco.pl/index.php/apps/passman/" "Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Firefox/31.0" "-"
+[13/Apr/2015:14:49:17 +0200] "GET /index.php/apps/passman/api/v1/getbytags?tags=test HTTP/1.1" 500 11424 "https://cloud.asseco.pl/index.php/apps/passman/" "Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Firefox/31.0" "-"
 
 #### ownCloud log (data/owncloud.log)
-```
-Insert your ownCloud log here
-```
+{"reqId":"bc4cd88a48ed25f4c3d6027afbbb0df6","remoteAddr":"172.31.0.30","app":"index","message":"Exception: {\"Message\":\"An exception occurred while executing 'SELECT tag_id as id, tag_label as label,renewal_period,min_pw_strength FROM \\\"oc_passman_tags\\\" WHERE \\\"user_id\\\" = ? AND tag_label COLLATE UTF8_GENERAL_CI LIKE ?' with params [\\\"owcadmin\\\", \\\"%te%\\\"]:\\n\\nSQLSTATE[42704]: Undefined object: 7 ERROR:  collation \\\"utf8_general_ci\\\" for encoding \\\"UTF8\\\" does not exist\\nLINE 1: ..._passman_tags\\\" WHERE \\\"user_id\\\" = $1 AND tag_label COLLATE UT...\\n                                                             ^\",\"Code\":0,\"Trace\":\"#0 \\\/var\\\/www\\\/html\\\/owncloud\\\/3rdparty\\\/doctrine\\\/dbal\\\/lib\\\/Doctrine\\\/DBAL\\\/DBALException.php(116): Doctrine\\\\DBAL\\\\Driver\\\\AbstractPostgreSQLDriver->convertException('An exception oc...', Object(Doctrine\\\\DBAL\\\\Driver\\\\PDOException))\\n#1 \\\/var\\\/www\\\/html\\\/owncloud\\\/3rdparty\\\/doctrine\\\/dbal\\\/lib\\\/Doctrine\\\/DBAL\\\/Statement.php(172): Doctrine\\\\DBAL\\\\DBALException::driverExceptionDuringQuery(Object(Doctrine\\\\DBAL\\\\Driver\\\\PDOPgSql\\\\Driver), Object(Doctrine\\\\DBAL\\\\Driver\\\\PDOException), 'SELECT tag_id a...', Array)\\n#2 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/db\\\/statementwrapper.php(63): Doctrine\\\\DBAL\\\\Statement->execute(Array)\\n#3 \\\/var\\\/www\\\/html\\\/owncloud\\\/apps\\\/passman\\\/db\\\/tagmanager.php(29): OC_DB_StatementWrapper->execute(Array)\\n#4 \\\/var\\\/www\\\/html\\\/owncloud\\\/apps\\\/passman\\\/businesslayer\\\/tagbusinesslayer.php(29): OCA\\\\Passman\\\\Db\\\\TagManager->search('te', 'owcadmin', false)\\n#5 \\\/var\\\/www\\\/html\\\/owncloud\\\/apps\\\/passman\\\/controller\\\/tagcontroller.php(36): OCA\\\\Passman\\\\BusinessLayer\\\\TagBusinessLayer->search('te', 'owcadmin')\\n#6 [internal function]: OCA\\\\Passman\\\\Controller\\\\TagController->search()\\n#7 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/appframework\\\/http\\\/dispatcher.php(158): call_user_func_array(Array, Array)\\n#8 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/appframework\\\/http\\\/dispatcher.php(86): OC\\\\AppFramework\\\\Http\\\\Dispatcher->executeController(Object(OCA\\\\Passman\\\\Controller\\\\TagController), 'search')\\n#9 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/appframework\\\/app.php(97): OC\\\\AppFramework\\\\Http\\\\Dispatcher->dispatch(Object(OCA\\\\Passman\\\\Controller\\\\TagController), 'search')\\n#10 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/appframework\\\/routing\\\/routeactionhandler.php(44): OC\\\\AppFramework\\\\App::main('TagController', 'search', Object(OC\\\\AppFramework\\\\DependencyInjection\\\\DIContainer), Array)\\n#11 [internal function]: OC\\\\AppFramework\\\\routing\\\\RouteActionHandler->__invoke(Array)\\n#12 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/route\\\/router.php(250): call_user_func(Object(OC\\\\AppFramework\\\\routing\\\\RouteActionHandler), Array)\\n#13 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/base.php(767): OC\\\\Route\\\\Router->match('\\\/apps\\\/passman\\\/a...')\\n#14 \\\/var\\\/www\\\/html\\\/owncloud\\\/index.php(36): OC::handleRequest()\\n#15 {main}\",\"File\":\"\\\/var\\\/www\\\/html\\\/owncloud\\\/3rdparty\\\/doctrine\\\/dbal\\\/lib\\\/Doctrine\\\/DBAL\\\/Driver\\\/AbstractPostgreSQLDriver.php\",\"Line\":91}","level":4,"time":"2015-04-13T12:49:14+00:00"}
+{"reqId":"ffbe70c597c66f7881969f3d099bcda1","remoteAddr":"172.31.0.30","app":"index","message":"Exception: {\"Message\":\"An exception occurred while executing 'SELECT tag_id as id, tag_label as label,renewal_period,min_pw_strength FROM \\\"oc_passman_tags\\\" WHERE \\\"user_id\\\" = ? AND tag_label COLLATE UTF8_GENERAL_CI LIKE ?' with params [\\\"owcadmin\\\", \\\"%test%\\\"]:\\n\\nSQLSTATE[42704]: Undefined object: 7 ERROR:  collation \\\"utf8_general_ci\\\" for encoding \\\"UTF8\\\" does not exist\\nLINE 1: ..._passman_tags\\\" WHERE \\\"user_id\\\" = $1 AND tag_label COLLATE UT...\\n                                                             ^\",\"Code\":0,\"Trace\":\"#0 \\\/var\\\/www\\\/html\\\/owncloud\\\/3rdparty\\\/doctrine\\\/dbal\\\/lib\\\/Doctrine\\\/DBAL\\\/DBALException.php(116): Doctrine\\\\DBAL\\\\Driver\\\\AbstractPostgreSQLDriver->convertException('An exception oc...', Object(Doctrine\\\\DBAL\\\\Driver\\\\PDOException))\\n#1 \\\/var\\\/www\\\/html\\\/owncloud\\\/3rdparty\\\/doctrine\\\/dbal\\\/lib\\\/Doctrine\\\/DBAL\\\/Statement.php(172): Doctrine\\\\DBAL\\\\DBALException::driverExceptionDuringQuery(Object(Doctrine\\\\DBAL\\\\Driver\\\\PDOPgSql\\\\Driver), Object(Doctrine\\\\DBAL\\\\Driver\\\\PDOException), 'SELECT tag_id a...', Array)\\n#2 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/db\\\/statementwrapper.php(63): Doctrine\\\\DBAL\\\\Statement->execute(Array)\\n#3 \\\/var\\\/www\\\/html\\\/owncloud\\\/apps\\\/passman\\\/db\\\/tagmanager.php(29): OC_DB_StatementWrapper->execute(Array)\\n#4 \\\/var\\\/www\\\/html\\\/owncloud\\\/apps\\\/passman\\\/businesslayer\\\/tagbusinesslayer.php(29): OCA\\\\Passman\\\\Db\\\\TagManager->search('test', 'owcadmin', false)\\n#5 \\\/var\\\/www\\\/html\\\/owncloud\\\/apps\\\/passman\\\/controller\\\/tagcontroller.php(36): OCA\\\\Passman\\\\BusinessLayer\\\\TagBusinessLayer->search('test', 'owcadmin')\\n#6 [internal function]: OCA\\\\Passman\\\\Controller\\\\TagController->search()\\n#7 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/appframework\\\/http\\\/dispatcher.php(158): call_user_func_array(Array, Array)\\n#8 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/appframework\\\/http\\\/dispatcher.php(86): OC\\\\AppFramework\\\\Http\\\\Dispatcher->executeController(Object(OCA\\\\Passman\\\\Controller\\\\TagController), 'search')\\n#9 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/appframework\\\/app.php(97): OC\\\\AppFramework\\\\Http\\\\Dispatcher->dispatch(Object(OCA\\\\Passman\\\\Controller\\\\TagController), 'search')\\n#10 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/appframework\\\/routing\\\/routeactionhandler.php(44): OC\\\\AppFramework\\\\App::main('TagController', 'search', Object(OC\\\\AppFramework\\\\DependencyInjection\\\\DIContainer), Array)\\n#11 [internal function]: OC\\\\AppFramework\\\\routing\\\\RouteActionHandler->__invoke(Array)\\n#12 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/private\\\/route\\\/router.php(250): call_user_func(Object(OC\\\\AppFramework\\\\routing\\\\RouteActionHandler), Array)\\n#13 \\\/var\\\/www\\\/html\\\/owncloud\\\/lib\\\/base.php(767): OC\\\\Route\\\\Router->match('\\\/apps\\\/passman\\\/a...')\\n#14 \\\/var\\\/www\\\/html\\\/owncloud\\\/index.php(36): OC::handleRequest()\\n#15 {main}\",\"File\":\"\\\/var\\\/www\\\/html\\\/owncloud\\\/3rdparty\\\/doctrine\\\/dbal\\\/lib\\\/Doctrine\\\/DBAL\\\/Driver\\\/AbstractPostgreSQLDriver.php\",\"Line\":91}","level":4,"time":"2015-04-13T12:49:14+00:00"}
 
-#### Browser log
-```
-Insert your browser log here, this could for example include:
-
-a) The javascript console log
-b) The network log 
-c) ...
-```
